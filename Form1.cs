@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using ProjetoPaisesC;
 using ProjetoPaisesC_;
+using System.Configuration;
 using System.Diagnostics;
 
 namespace ProjetoPaises_WinForms
@@ -14,7 +15,7 @@ namespace ProjetoPaises_WinForms
         public Form1()
         {
             InitializeComponent();
-
+            InitializeUI("UIMode");
             string connectionString = "Data Source=countries.db;Version=3;";
             dbSQL = new ClassSQLtoC(connectionString);
             LoadCountries();
@@ -131,6 +132,38 @@ namespace ProjetoPaises_WinForms
         }
 
         #region Funções Extra
+
+        private void InitializeUI(string key)
+        {
+            try
+            {
+                var uiMode = ConfigurationManager.AppSettings[key];
+                if (uiMode == "light")
+                {
+                    //btnDarkMode.Text = "Enable Light Mode";
+                    this.ForeColor = Color.FromArgb(245, 247, 246);
+                    this.BackColor = Color.FromArgb(3, 0, 10);
+                    ConfigurationManager.AppSettings[key] = "dark";
+
+                }
+                else
+                {
+                    //btnDarkMode.Text = "Enable Dark Mode";
+                    this.ForeColor = Color.FromArgb(3, 0, 10);
+                    this.BackColor = Color.FromArgb(245, 247, 246);
+                    ConfigurationManager.AppSettings[key] = "light";
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        } //Funcionalidade Dark Mode
+
+        private void btnDarkMode_Click(object sender, EventArgs e)
+        {
+            InitializeUI("UIMode");
+        } // btn Dark Mode
 
         private void SortCountriesByNameAZ() //Ordenar Paises A -> Z 
         {

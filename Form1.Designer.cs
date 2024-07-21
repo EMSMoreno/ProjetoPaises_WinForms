@@ -67,6 +67,7 @@
             txtOfficialName = new TextBox();
             txtName = new TextBox();
             btnCleanForm = new Button();
+            btnDarkMode = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBoxFlag).BeginInit();
             SuspendLayout();
             // 
@@ -443,12 +444,25 @@
             btnCleanForm.UseVisualStyleBackColor = true;
             btnCleanForm.Click += btnCleanForm_Click;
             // 
+            // btnDarkMode
+            // 
+            btnDarkMode.FlatAppearance.BorderColor = Color.Black;
+            btnDarkMode.FlatStyle = FlatStyle.Flat;
+            btnDarkMode.Location = new Point(454, 155);
+            btnDarkMode.Name = "btnDarkMode";
+            btnDarkMode.Size = new Size(147, 27);
+            btnDarkMode.TabIndex = 53;
+            btnDarkMode.Text = "Enable Dark Mode";
+            btnDarkMode.UseVisualStyleBackColor = true;
+            btnDarkMode.Click += btnDarkMode_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(1224, 666);
+            Controls.Add(btnDarkMode);
             Controls.Add(btnCleanForm);
             Controls.Add(txtName);
             Controls.Add(txtOfficialName);
@@ -537,5 +551,6 @@
         private TextBox txtOfficialName;
         private TextBox txtName;
         private Button btnCleanForm;
+        private Button btnDarkMode;
     }
 }
