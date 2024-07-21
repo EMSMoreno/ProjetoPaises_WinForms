@@ -140,7 +140,7 @@ namespace ProjetoPaises_WinForms
                 var uiMode = ConfigurationManager.AppSettings[key];
                 if (uiMode == "light")
                 {
-                    //btnDarkMode.Text = "Enable Light Mode";
+                    btnDarkMode.Text = "Enable Light Mode";
                     this.ForeColor = Color.FromArgb(245, 247, 246);
                     this.BackColor = Color.FromArgb(3, 0, 10);
                     ConfigurationManager.AppSettings[key] = "dark";
@@ -148,7 +148,7 @@ namespace ProjetoPaises_WinForms
                 }
                 else
                 {
-                    //btnDarkMode.Text = "Enable Dark Mode";
+                    btnDarkMode.Text = "Enable Dark Mode";
                     this.ForeColor = Color.FromArgb(3, 0, 10);
                     this.BackColor = Color.FromArgb(245, 247, 246);
                     ConfigurationManager.AppSettings[key] = "light";
@@ -164,6 +164,11 @@ namespace ProjetoPaises_WinForms
         {
             InitializeUI("UIMode");
         } // btn Dark Mode
+
+        private void btnCleanCountry_Click(object sender, EventArgs e)
+        {
+            txtSearchCountry.Text = string.Empty;
+        } // btn Limpar país procurado
 
         private void SortCountriesByNameAZ() //Ordenar Paises A -> Z 
         {
@@ -196,15 +201,10 @@ namespace ProjetoPaises_WinForms
             }
         } //Não ligues a isto, é só uma feature q quero fazer, traduzir o nome dos país selecionado com um popup
 
-        #endregion
-
-        #region UI
-
-        //Github
         private void btnGithub_Click(object sender, EventArgs e)
         {
             ShowGithub(GitHubUsername);
-        }
+        } // btn abrir Github
 
         private void ShowGithub(string username)
         {
@@ -221,7 +221,6 @@ namespace ProjetoPaises_WinForms
                 MessageBox.Show($"Erro ao abrir o perfil do GitHub: {ex.GetType().ToString()}\n{ex.Message}");
             }
         }
-
 
         //Order By
         private void btnSortAZ_Click(object sender, EventArgs e)
@@ -264,6 +263,7 @@ namespace ProjetoPaises_WinForms
         }
 
         #endregion
+
 
         
     }

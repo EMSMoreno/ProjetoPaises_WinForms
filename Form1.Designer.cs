@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             lblFlag = new Label();
             lblName = new Label();
             lblOfficialName = new Label();
@@ -68,13 +69,22 @@
             txtName = new TextBox();
             btnCleanForm = new Button();
             btnDarkMode = new Button();
+            lblFuncionalities = new Label();
+            lblCountriesList = new Label();
+            pictureBox1 = new PictureBox();
+            btnCleanCountry = new Button();
+            btnSearchCountry = new Button();
+            txtSearchCountry = new TextBox();
+            label1 = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureBoxFlag).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
             // lblFlag
             // 
             lblFlag.AutoSize = true;
-            lblFlag.Location = new Point(15, 220);
+            lblFlag.Font = new Font("Segoe UI", 9F, FontStyle.Italic, GraphicsUnit.Point, 0);
+            lblFlag.Location = new Point(12, 178);
             lblFlag.Name = "lblFlag";
             lblFlag.Size = new Size(75, 15);
             lblFlag.TabIndex = 0;
@@ -83,51 +93,55 @@
             // lblName
             // 
             lblName.AutoSize = true;
-            lblName.Location = new Point(15, 307);
+            lblName.Font = new Font("Segoe UI", 9F, FontStyle.Italic, GraphicsUnit.Point, 0);
+            lblName.Location = new Point(12, 265);
             lblName.Name = "lblName";
-            lblName.Size = new Size(85, 15);
+            lblName.Size = new Size(84, 15);
             lblName.TabIndex = 1;
             lblName.Text = "Country Name";
             // 
             // lblOfficialName
             // 
             lblOfficialName.AutoSize = true;
-            lblOfficialName.Location = new Point(15, 355);
+            lblOfficialName.Font = new Font("Segoe UI", 9F, FontStyle.Italic, GraphicsUnit.Point, 0);
+            lblOfficialName.Location = new Point(12, 313);
             lblOfficialName.Name = "lblOfficialName";
-            lblOfficialName.Size = new Size(126, 15);
+            lblOfficialName.Size = new Size(125, 15);
             lblOfficialName.TabIndex = 2;
             lblOfficialName.Text = "Country Official Name";
             // 
             // lblCurrency
             // 
             lblCurrency.AutoSize = true;
-            lblCurrency.Location = new Point(15, 402);
+            lblCurrency.Font = new Font("Segoe UI", 9F, FontStyle.Italic, GraphicsUnit.Point, 0);
+            lblCurrency.Location = new Point(12, 360);
             lblCurrency.Name = "lblCurrency";
-            lblCurrency.Size = new Size(101, 15);
+            lblCurrency.Size = new Size(99, 15);
             lblCurrency.TabIndex = 3;
             lblCurrency.Text = "Country Currency";
             // 
             // lblCapital
             // 
             lblCapital.AutoSize = true;
-            lblCapital.Location = new Point(15, 445);
+            lblCapital.Font = new Font("Segoe UI", 9F, FontStyle.Italic, GraphicsUnit.Point, 0);
+            lblCapital.Location = new Point(12, 403);
             lblCapital.Name = "lblCapital";
-            lblCapital.Size = new Size(90, 15);
+            lblCapital.Size = new Size(91, 15);
             lblCapital.TabIndex = 4;
             lblCapital.Text = "Country Capital";
             // 
             // panel
             // 
             panel.BackColor = Color.Gray;
-            panel.Location = new Point(1047, 1);
+            panel.Location = new Point(1047, 432);
             panel.Name = "panel";
-            panel.Size = new Size(179, 664);
+            panel.Size = new Size(179, 172);
             panel.TabIndex = 5;
             // 
             // txtCurrency
             // 
             txtCurrency.Enabled = false;
-            txtCurrency.Location = new Point(147, 399);
+            txtCurrency.Location = new Point(144, 357);
             txtCurrency.Name = "txtCurrency";
             txtCurrency.Size = new Size(142, 23);
             txtCurrency.TabIndex = 7;
@@ -136,7 +150,7 @@
             // txtCapital
             // 
             txtCapital.Enabled = false;
-            txtCapital.Location = new Point(147, 442);
+            txtCapital.Location = new Point(144, 400);
             txtCapital.Name = "txtCapital";
             txtCapital.Size = new Size(142, 23);
             txtCapital.TabIndex = 8;
@@ -145,7 +159,7 @@
             // txtRegion
             // 
             txtRegion.Enabled = false;
-            txtRegion.Location = new Point(147, 487);
+            txtRegion.Location = new Point(144, 445);
             txtRegion.Name = "txtRegion";
             txtRegion.Size = new Size(142, 23);
             txtRegion.TabIndex = 9;
@@ -154,7 +168,7 @@
             // txtSubregion
             // 
             txtSubregion.Enabled = false;
-            txtSubregion.Location = new Point(147, 529);
+            txtSubregion.Location = new Point(144, 487);
             txtSubregion.Name = "txtSubregion";
             txtSubregion.Size = new Size(142, 23);
             txtSubregion.TabIndex = 10;
@@ -163,23 +177,24 @@
             // lblRegion
             // 
             lblRegion.AutoSize = true;
-            lblRegion.Location = new Point(15, 487);
+            lblRegion.Font = new Font("Segoe UI", 9F, FontStyle.Italic, GraphicsUnit.Point, 0);
+            lblRegion.Location = new Point(12, 445);
             lblRegion.Name = "lblRegion";
-            lblRegion.Size = new Size(90, 15);
+            lblRegion.Size = new Size(88, 15);
             lblRegion.TabIndex = 12;
             lblRegion.Text = "Country Region";
             // 
             // progressBar
             // 
             progressBar.ForeColor = Color.Black;
-            progressBar.Location = new Point(15, 122);
+            progressBar.Location = new Point(336, 196);
             progressBar.Name = "progressBar";
-            progressBar.Size = new Size(584, 27);
+            progressBar.Size = new Size(407, 27);
             progressBar.TabIndex = 13;
             // 
             // pictureBoxFlag
             // 
-            pictureBoxFlag.Location = new Point(147, 192);
+            pictureBoxFlag.Location = new Point(144, 150);
             pictureBoxFlag.Name = "pictureBoxFlag";
             pictureBoxFlag.Size = new Size(142, 80);
             pictureBoxFlag.SizeMode = PictureBoxSizeMode.Zoom;
@@ -189,16 +204,17 @@
             // lblSubregion
             // 
             lblSubregion.AutoSize = true;
-            lblSubregion.Location = new Point(15, 532);
+            lblSubregion.Font = new Font("Segoe UI", 9F, FontStyle.Italic, GraphicsUnit.Point, 0);
+            lblSubregion.Location = new Point(12, 490);
             lblSubregion.Name = "lblSubregion";
-            lblSubregion.Size = new Size(110, 15);
+            lblSubregion.Size = new Size(108, 15);
             lblSubregion.TabIndex = 15;
             lblSubregion.Text = "Country SubRegion";
             // 
             // lblLoading
             // 
             lblLoading.AutoSize = true;
-            lblLoading.Location = new Point(15, 104);
+            lblLoading.Location = new Point(336, 178);
             lblLoading.Name = "lblLoading";
             lblLoading.Size = new Size(59, 15);
             lblLoading.TabIndex = 17;
@@ -207,16 +223,17 @@
             // lblPopulation
             // 
             lblPopulation.AutoSize = true;
-            lblPopulation.Location = new Point(15, 577);
+            lblPopulation.Font = new Font("Segoe UI", 9F, FontStyle.Italic, GraphicsUnit.Point, 0);
+            lblPopulation.Location = new Point(12, 535);
             lblPopulation.Name = "lblPopulation";
-            lblPopulation.Size = new Size(111, 15);
+            lblPopulation.Size = new Size(109, 15);
             lblPopulation.TabIndex = 19;
             lblPopulation.Text = "Country Population";
             // 
             // txtPopulation
             // 
             txtPopulation.Enabled = false;
-            txtPopulation.Location = new Point(147, 574);
+            txtPopulation.Location = new Point(144, 532);
             txtPopulation.Name = "txtPopulation";
             txtPopulation.Size = new Size(142, 23);
             txtPopulation.TabIndex = 18;
@@ -225,16 +242,17 @@
             // lblGiniIndex
             // 
             lblGiniIndex.AutoSize = true;
-            lblGiniIndex.Location = new Point(15, 616);
+            lblGiniIndex.Font = new Font("Segoe UI", 9F, FontStyle.Italic, GraphicsUnit.Point, 0);
+            lblGiniIndex.Location = new Point(12, 574);
             lblGiniIndex.Name = "lblGiniIndex";
-            lblGiniIndex.Size = new Size(106, 15);
+            lblGiniIndex.Size = new Size(104, 15);
             lblGiniIndex.TabIndex = 21;
             lblGiniIndex.Text = "Country Gini Index";
             // 
             // txtGiniIndex
             // 
             txtGiniIndex.Enabled = false;
-            txtGiniIndex.Location = new Point(147, 613);
+            txtGiniIndex.Location = new Point(144, 571);
             txtGiniIndex.Name = "txtGiniIndex";
             txtGiniIndex.Size = new Size(65, 23);
             txtGiniIndex.TabIndex = 20;
@@ -244,7 +262,7 @@
             // 
             btnLoadCountries.FlatAppearance.BorderColor = Color.Orange;
             btnLoadCountries.FlatStyle = FlatStyle.Flat;
-            btnLoadCountries.Location = new Point(607, 155);
+            btnLoadCountries.Location = new Point(1065, 117);
             btnLoadCountries.Name = "btnLoadCountries";
             btnLoadCountries.Size = new Size(147, 27);
             btnLoadCountries.TabIndex = 22;
@@ -256,7 +274,7 @@
             // 
             btnJapanese.FlatAppearance.BorderColor = Color.BlueViolet;
             btnJapanese.FlatStyle = FlatStyle.Flat;
-            btnJapanese.Location = new Point(607, 254);
+            btnJapanese.Location = new Point(1065, 216);
             btnJapanese.Name = "btnJapanese";
             btnJapanese.Size = new Size(147, 27);
             btnJapanese.TabIndex = 23;
@@ -267,7 +285,7 @@
             // 
             btnOrderAZ.FlatAppearance.BorderColor = Color.GreenYellow;
             btnOrderAZ.FlatStyle = FlatStyle.Flat;
-            btnOrderAZ.Location = new Point(607, 188);
+            btnOrderAZ.Location = new Point(1065, 150);
             btnOrderAZ.Name = "btnOrderAZ";
             btnOrderAZ.Size = new Size(147, 27);
             btnOrderAZ.TabIndex = 24;
@@ -279,7 +297,7 @@
             // 
             btnOrderZA.FlatAppearance.BorderColor = Color.GreenYellow;
             btnOrderZA.FlatStyle = FlatStyle.Flat;
-            btnOrderZA.Location = new Point(607, 221);
+            btnOrderZA.Location = new Point(1065, 183);
             btnOrderZA.Name = "btnOrderZA";
             btnOrderZA.Size = new Size(147, 27);
             btnOrderZA.TabIndex = 25;
@@ -290,16 +308,17 @@
             // lblCountryContinent
             // 
             lblCountryContinent.AutoSize = true;
-            lblCountryContinent.Location = new Point(444, 496);
+            lblCountryContinent.Font = new Font("Segoe UI", 9F, FontStyle.Italic, GraphicsUnit.Point, 0);
+            lblCountryContinent.Location = new Point(450, 464);
             lblCountryContinent.Name = "lblCountryContinent";
-            lblCountryContinent.Size = new Size(106, 15);
+            lblCountryContinent.Size = new Size(104, 15);
             lblCountryContinent.TabIndex = 31;
             lblCountryContinent.Text = "Country Continent";
             // 
             // txtCountryContinent
             // 
             txtCountryContinent.Enabled = false;
-            txtCountryContinent.Location = new Point(559, 493);
+            txtCountryContinent.Location = new Point(565, 461);
             txtCountryContinent.Name = "txtCountryContinent";
             txtCountryContinent.Size = new Size(86, 23);
             txtCountryContinent.TabIndex = 30;
@@ -308,16 +327,17 @@
             // lblCountryTimezones
             // 
             lblCountryTimezones.AutoSize = true;
-            lblCountryTimezones.Location = new Point(444, 540);
+            lblCountryTimezones.Font = new Font("Segoe UI", 9F, FontStyle.Italic, GraphicsUnit.Point, 0);
+            lblCountryTimezones.Location = new Point(450, 508);
             lblCountryTimezones.Name = "lblCountryTimezones";
-            lblCountryTimezones.Size = new Size(109, 15);
+            lblCountryTimezones.Size = new Size(106, 15);
             lblCountryTimezones.TabIndex = 29;
             lblCountryTimezones.Text = "Country Timezones";
             // 
             // txtTimezones
             // 
             txtTimezones.Enabled = false;
-            txtTimezones.Location = new Point(559, 537);
+            txtTimezones.Location = new Point(565, 505);
             txtTimezones.Multiline = true;
             txtTimezones.Name = "txtTimezones";
             txtTimezones.Size = new Size(178, 99);
@@ -327,16 +347,17 @@
             // lblDescription
             // 
             lblDescription.AutoSize = true;
-            lblDescription.Location = new Point(444, 293);
+            lblDescription.Font = new Font("Segoe UI", 9F, FontStyle.Italic, GraphicsUnit.Point, 0);
+            lblDescription.Location = new Point(450, 261);
             lblDescription.Name = "lblDescription";
-            lblDescription.Size = new Size(146, 15);
+            lblDescription.Size = new Size(145, 15);
             lblDescription.TabIndex = 34;
             lblDescription.Text = "Country Flag - Description";
             // 
             // txtFlagDescription
             // 
             txtFlagDescription.Enabled = false;
-            txtFlagDescription.Location = new Point(444, 311);
+            txtFlagDescription.Location = new Point(450, 279);
             txtFlagDescription.Multiline = true;
             txtFlagDescription.Name = "txtFlagDescription";
             txtFlagDescription.Size = new Size(293, 154);
@@ -347,7 +368,7 @@
             // 
             lblTitle.AutoSize = true;
             lblTitle.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblTitle.Location = new Point(12, 9);
+            lblTitle.Location = new Point(118, 9);
             lblTitle.Name = "lblTitle";
             lblTitle.Size = new Size(402, 32);
             lblTitle.TabIndex = 38;
@@ -357,7 +378,7 @@
             // 
             lblCreator.AutoSize = true;
             lblCreator.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblCreator.Location = new Point(607, 9);
+            lblCreator.Location = new Point(1065, 346);
             lblCreator.Name = "lblCreator";
             lblCreator.Size = new Size(147, 15);
             lblCreator.TabIndex = 39;
@@ -367,7 +388,7 @@
             // 
             btnGithub.FlatAppearance.BorderColor = SystemColors.MenuHighlight;
             btnGithub.FlatStyle = FlatStyle.Flat;
-            btnGithub.Location = new Point(607, 27);
+            btnGithub.Location = new Point(1065, 364);
             btnGithub.Name = "btnGithub";
             btnGithub.Size = new Size(147, 51);
             btnGithub.TabIndex = 40;
@@ -378,7 +399,7 @@
             // txtSymbol
             // 
             txtSymbol.Enabled = false;
-            txtSymbol.Location = new Point(367, 399);
+            txtSymbol.Location = new Point(364, 357);
             txtSymbol.Name = "txtSymbol";
             txtSymbol.Size = new Size(42, 23);
             txtSymbol.TabIndex = 41;
@@ -387,9 +408,10 @@
             // CountrySymbol
             // 
             CountrySymbol.AutoSize = true;
-            CountrySymbol.Location = new Point(314, 402);
+            CountrySymbol.Font = new Font("Segoe UI", 9F, FontStyle.Italic, GraphicsUnit.Point, 0);
+            CountrySymbol.Location = new Point(311, 360);
             CountrySymbol.Name = "CountrySymbol";
-            CountrySymbol.Size = new Size(47, 15);
+            CountrySymbol.Size = new Size(45, 15);
             CountrySymbol.TabIndex = 42;
             CountrySymbol.Text = "Symbol";
             // 
@@ -397,9 +419,9 @@
             // 
             listBoxCountries.FormattingEnabled = true;
             listBoxCountries.ItemHeight = 15;
-            listBoxCountries.Location = new Point(760, 1);
+            listBoxCountries.Location = new Point(760, 196);
             listBoxCountries.Name = "listBoxCountries";
-            listBoxCountries.Size = new Size(281, 664);
+            listBoxCountries.Size = new Size(281, 409);
             listBoxCountries.TabIndex = 48;
             listBoxCountries.SelectedIndexChanged += listBoxCountries_SelectedIndexChanged;
             // 
@@ -408,7 +430,7 @@
             lblSubtitle.AutoSize = true;
             lblSubtitle.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
             lblSubtitle.ForeColor = Color.Black;
-            lblSubtitle.Location = new Point(67, 41);
+            lblSubtitle.Location = new Point(240, 41);
             lblSubtitle.Name = "lblSubtitle";
             lblSubtitle.Size = new Size(155, 21);
             lblSubtitle.TabIndex = 49;
@@ -417,7 +439,7 @@
             // txtOfficialName
             // 
             txtOfficialName.Enabled = false;
-            txtOfficialName.Location = new Point(147, 352);
+            txtOfficialName.Location = new Point(144, 310);
             txtOfficialName.Name = "txtOfficialName";
             txtOfficialName.Size = new Size(214, 23);
             txtOfficialName.TabIndex = 50;
@@ -426,7 +448,7 @@
             // txtName
             // 
             txtName.Enabled = false;
-            txtName.Location = new Point(147, 304);
+            txtName.Location = new Point(144, 262);
             txtName.Name = "txtName";
             txtName.Size = new Size(262, 23);
             txtName.TabIndex = 51;
@@ -436,7 +458,7 @@
             // 
             btnCleanForm.FlatAppearance.BorderColor = Color.Red;
             btnCleanForm.FlatStyle = FlatStyle.Flat;
-            btnCleanForm.Location = new Point(607, 122);
+            btnCleanForm.Location = new Point(1065, 84);
             btnCleanForm.Name = "btnCleanForm";
             btnCleanForm.Size = new Size(147, 27);
             btnCleanForm.TabIndex = 52;
@@ -448,7 +470,7 @@
             // 
             btnDarkMode.FlatAppearance.BorderColor = Color.Black;
             btnDarkMode.FlatStyle = FlatStyle.Flat;
-            btnDarkMode.Location = new Point(454, 155);
+            btnDarkMode.Location = new Point(1065, 249);
             btnDarkMode.Name = "btnDarkMode";
             btnDarkMode.Size = new Size(147, 27);
             btnDarkMode.TabIndex = 53;
@@ -456,12 +478,89 @@
             btnDarkMode.UseVisualStyleBackColor = true;
             btnDarkMode.Click += btnDarkMode_Click;
             // 
+            // lblFuncionalities
+            // 
+            lblFuncionalities.AutoSize = true;
+            lblFuncionalities.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblFuncionalities.Location = new Point(1065, 66);
+            lblFuncionalities.Name = "lblFuncionalities";
+            lblFuncionalities.Size = new Size(82, 15);
+            lblFuncionalities.TabIndex = 54;
+            lblFuncionalities.Text = "Funcionalities";
+            // 
+            // lblCountriesList
+            // 
+            lblCountriesList.AutoSize = true;
+            lblCountriesList.Font = new Font("Segoe UI", 9F, FontStyle.Italic, GraphicsUnit.Point, 0);
+            lblCountriesList.Location = new Point(760, 178);
+            lblCountriesList.Name = "lblCountriesList";
+            lblCountriesList.Size = new Size(78, 15);
+            lblCountriesList.TabIndex = 55;
+            lblCountriesList.Text = "Countries List";
+            // 
+            // pictureBox1
+            // 
+            pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
+            pictureBox1.Location = new Point(2, 9);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(111, 53);
+            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox1.TabIndex = 56;
+            pictureBox1.TabStop = false;
+            // 
+            // btnCleanCountry
+            // 
+            btnCleanCountry.FlatAppearance.BorderColor = Color.Red;
+            btnCleanCountry.FlatStyle = FlatStyle.Flat;
+            btnCleanCountry.Location = new Point(759, 117);
+            btnCleanCountry.Name = "btnCleanCountry";
+            btnCleanCountry.Size = new Size(147, 27);
+            btnCleanCountry.TabIndex = 57;
+            btnCleanCountry.Text = "Clean Search";
+            btnCleanCountry.UseVisualStyleBackColor = true;
+            btnCleanCountry.Click += btnCleanCountry_Click;
+            // 
+            // btnSearchCountry
+            // 
+            btnSearchCountry.FlatAppearance.BorderColor = Color.DodgerBlue;
+            btnSearchCountry.FlatStyle = FlatStyle.Flat;
+            btnSearchCountry.Location = new Point(912, 117);
+            btnSearchCountry.Name = "btnSearchCountry";
+            btnSearchCountry.Size = new Size(147, 27);
+            btnSearchCountry.TabIndex = 58;
+            btnSearchCountry.Text = "Search Country";
+            btnSearchCountry.UseVisualStyleBackColor = true;
+            // 
+            // txtSearchCountry
+            // 
+            txtSearchCountry.Location = new Point(856, 87);
+            txtSearchCountry.Name = "txtSearchCountry";
+            txtSearchCountry.Size = new Size(202, 23);
+            txtSearchCountry.TabIndex = 59;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 9F, FontStyle.Italic, GraphicsUnit.Point, 0);
+            label1.Location = new Point(759, 90);
+            label1.Name = "label1";
+            label1.Size = new Size(90, 15);
+            label1.TabIndex = 60;
+            label1.Text = "Country Search:";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
-            ClientSize = new Size(1224, 666);
+            ClientSize = new Size(1224, 607);
+            Controls.Add(label1);
+            Controls.Add(txtSearchCountry);
+            Controls.Add(btnSearchCountry);
+            Controls.Add(btnCleanCountry);
+            Controls.Add(pictureBox1);
+            Controls.Add(lblCountriesList);
+            Controls.Add(lblFuncionalities);
             Controls.Add(btnDarkMode);
             Controls.Add(btnCleanForm);
             Controls.Add(txtName);
@@ -506,6 +605,7 @@
             Name = "Form1";
             Text = "CountriesProject";
             ((System.ComponentModel.ISupportInitialize)pictureBoxFlag).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -552,5 +652,12 @@
         private TextBox txtName;
         private Button btnCleanForm;
         private Button btnDarkMode;
+        private Label lblFuncionalities;
+        private Label lblCountriesList;
+        private PictureBox pictureBox1;
+        private Button btnCleanCountry;
+        private Button btnSearchCountry;
+        private TextBox txtSearchCountry;
+        private Label label1;
     }
 }
