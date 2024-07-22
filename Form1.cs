@@ -241,7 +241,7 @@ namespace ProjetoPaises_WinForms
         {
             string searchText = txtSearchCountry.Text.Trim().ToLower();
 
-            Debug.WriteLine($"Texto da pesquisa: {searchText}");
+            Debug.WriteLine($"Search Text: {searchText}");
 
             if (string.IsNullOrEmpty(searchText))
             {
@@ -254,7 +254,7 @@ namespace ProjetoPaises_WinForms
                     .Select(kvp => kvp.Key)
                     .ToList();
 
-                Debug.WriteLine("Nomes de países filtrados:");
+                Debug.WriteLine("Filtered Countries Names:");
                 foreach (var name in filteredCountryNames)
                 {
                     Debug.WriteLine(name);
@@ -263,7 +263,7 @@ namespace ProjetoPaises_WinForms
                 // Verifica se a filtragem retornou algum resultado
                 if (filteredCountryNames.Count == 0)
                 {
-                    MessageBox.Show("Nenhum país encontrado.", "Resultado da Pesquisa", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Country Not Found.", "Search Result", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
 
                 // Atualize a lista com os nomes dos países filtrados

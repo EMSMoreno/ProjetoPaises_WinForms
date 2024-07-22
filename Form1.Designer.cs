@@ -191,9 +191,9 @@
             // progressBar
             // 
             progressBar.ForeColor = Color.Black;
-            progressBar.Location = new Point(347, 121);
+            progressBar.Location = new Point(213, 103);
             progressBar.Name = "progressBar";
-            progressBar.Size = new Size(407, 27);
+            progressBar.Size = new Size(402, 27);
             progressBar.TabIndex = 13;
             // 
             // pictureBoxFlag
@@ -218,7 +218,7 @@
             // lblLoading
             // 
             lblLoading.AutoSize = true;
-            lblLoading.Location = new Point(347, 103);
+            lblLoading.Location = new Point(213, 85);
             lblLoading.Name = "lblLoading";
             lblLoading.Size = new Size(59, 15);
             lblLoading.TabIndex = 17;
@@ -373,7 +373,7 @@
             // 
             lblTitle.AutoSize = true;
             lblTitle.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblTitle.Location = new Point(118, 9);
+            lblTitle.Location = new Point(213, 9);
             lblTitle.Name = "lblTitle";
             lblTitle.Size = new Size(402, 32);
             lblTitle.TabIndex = 38;
@@ -425,7 +425,7 @@
             lblSubtitle.AutoSize = true;
             lblSubtitle.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
             lblSubtitle.ForeColor = Color.Black;
-            lblSubtitle.Location = new Point(240, 41);
+            lblSubtitle.Location = new Point(335, 41);
             lblSubtitle.Name = "lblSubtitle";
             lblSubtitle.Size = new Size(155, 21);
             lblSubtitle.TabIndex = 49;
@@ -497,7 +497,7 @@
             // pictureBox1
             // 
             pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
-            pictureBox1.Location = new Point(2, 9);
+            pictureBox1.Location = new Point(35, 9);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(111, 53);
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
@@ -558,7 +558,7 @@
             // lblComplete
             // 
             lblComplete.AutoSize = true;
-            lblComplete.Location = new Point(692, 103);
+            lblComplete.Location = new Point(558, 85);
             lblComplete.Name = "lblComplete";
             lblComplete.Size = new Size(62, 15);
             lblComplete.TabIndex = 62;
@@ -567,7 +567,7 @@
             // lbl30
             // 
             lbl30.AutoSize = true;
-            lbl30.Location = new Point(421, 103);
+            lbl30.Location = new Point(287, 85);
             lbl30.Name = "lbl30";
             lbl30.Size = new Size(29, 15);
             lbl30.TabIndex = 63;
@@ -576,7 +576,7 @@
             // lbl50
             // 
             lbl50.AutoSize = true;
-            lbl50.Location = new Point(537, 103);
+            lbl50.Location = new Point(400, 85);
             lbl50.Name = "lbl50";
             lbl50.Size = new Size(29, 15);
             lbl50.TabIndex = 64;
@@ -585,7 +585,7 @@
             // lbl70
             // 
             lbl70.AutoSize = true;
-            lbl70.Location = new Point(643, 103);
+            lbl70.Location = new Point(509, 85);
             lbl70.Name = "lbl70";
             lbl70.Size = new Size(29, 15);
             lbl70.TabIndex = 65;
