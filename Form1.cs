@@ -16,7 +16,7 @@ namespace ProjetoPaises_WinForms
         public Form1()
         {
             InitializeComponent();
-            InitializeUI("UIMode");
+            InitializeUI("UIMode"); //Passa o value para depois termos acesso ao Dark Mode
             string connectionString = "Data Source=countries.db;Version=3;";
             dbSQL = new ClassSQLtoC(connectionString);
             LoadCountries();
@@ -38,11 +38,11 @@ namespace ProjetoPaises_WinForms
                         // Usar JObject para deserializar os dados para a classe ClassCountry
                         var country = item.ToObject<ClassCountry>();
 
-                        // Corrigir campos adicionais
-                        country.Continent = country.Region; // Passar a região como continente, se aplicável
-                        country.FlagDescription = country.Flags?.Alt; // Passar a descrição da bandeira
+                        // Corrige os campos adicionais
+                        country.Continent = country.Region; // Passa a região como continente, se aplicável
+                        country.FlagDescription = country.Flags?.Alt; // Passa a descrição da bandeira
 
-                        // Verificar se Timezones é nulo e inicializar se necessário
+                        // Verifica se as Timezones são nulas e inicializa se necessário
                         if (country.Timezones == null)
                         {
                             country.Timezones = new List<string>();
@@ -54,7 +54,7 @@ namespace ProjetoPaises_WinForms
                             country.Translations = new Dictionary<string, ClassCountryTranslation>();
                         }
 
-                        // Adiciona as traduções se existirem
+                        // Adiciona as traduções, caso existam
                         var translationsObject = item["translations"];
                         if (translationsObject != null)
                         {
@@ -116,7 +116,7 @@ namespace ProjetoPaises_WinForms
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Erro ao carregar a imagem da bandeira: {ex.Message}");
+                    MessageBox.Show($"Error while loading Country Flag: {ex.Message}");
                     pictureBoxFlag.Image = null; // Limpa a imagem se houver erro
                 }
             }
@@ -136,7 +136,7 @@ namespace ProjetoPaises_WinForms
                 {
                     progressBar.Value = 20;
                     countries = await FetchCountriesFromAPI();
-                    MessageBox.Show($"Número de países carregados: {countries.Count}");
+                    MessageBox.Show($"Number of Loaded Countries: {countries.Count}");
                     dbSQL.SaveCountries(countries);
                 }
                 else
@@ -150,7 +150,7 @@ namespace ProjetoPaises_WinForms
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Erro ao carregar os países: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"There is an error while loading Countries: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -158,7 +158,7 @@ namespace ProjetoPaises_WinForms
         {
             if (listBoxCountries.SelectedItem != null)
             {
-                // Encontra o país correspondente pelo nome comum
+                // Encontra o país correspondente pelo Common Name
                 var selectedCountryName = listBoxCountries.SelectedItem.ToString();
                 var selectedCountry = countries.FirstOrDefault(c => c.Name.Common == selectedCountryName);
 
@@ -178,14 +178,24 @@ namespace ProjetoPaises_WinForms
                 return;
             }
 
-            // Cria uma lista de nomes de países
+            // Cria uma lista de nomes dos países
             var countryNames = countries.Select(c => c.Name.Common).ToList();
 
-            // Adiciona logs para depuração
-            Debug.WriteLine($"Number of countries: {countries.Count}");
+            // Atualiza o dicionário de mapeamento
+            countryLookup.Clear();
             foreach (var country in countries)
             {
-                Debug.WriteLine($"Country: {country.Name.Common}, Official: {country.Name.Official}");
+                if (!countryLookup.ContainsKey(country.Name.Common))
+                {
+                    countryLookup[country.Name.Common] = country;
+                }
+            }
+
+            // Adiciona logs para verificar o conteúdo do dicionário
+            Debug.WriteLine("Contenu do countryLookup:");
+            foreach (var kvp in countryLookup)
+            {
+                Debug.WriteLine($"Name: {kvp.Key}, Country: {kvp.Value.Name.Common}");
             }
 
             // Associa a lista de nomes ao DataSource do ListBox
@@ -220,12 +230,47 @@ namespace ProjetoPaises_WinForms
             {
                 throw;
             }
-        } 
+        }
 
         private void btnDarkMode_Click(object sender, EventArgs e)
         {
             InitializeUI("UIMode");
         } // btn Dark Mode
+
+        private void btnSearchCountry_Click(object sender, EventArgs e)
+        {
+            string searchText = txtSearchCountry.Text.Trim().ToLower();
+
+            Debug.WriteLine($"Texto da pesquisa: {searchText}");
+
+            if (string.IsNullOrEmpty(searchText))
+            {
+                DisplayCountries(); // Se a caixa de pesquisa estiver vazia, exiba todos os países
+            }
+            else
+            {
+                var filteredCountryNames = countryLookup
+                    .Where(kvp => kvp.Key.ToLower().Contains(searchText))
+                    .Select(kvp => kvp.Key)
+                    .ToList();
+
+                Debug.WriteLine("Nomes de países filtrados:");
+                foreach (var name in filteredCountryNames)
+                {
+                    Debug.WriteLine(name);
+                }
+
+                // Verifica se a filtragem retornou algum resultado
+                if (filteredCountryNames.Count == 0)
+                {
+                    MessageBox.Show("Nenhum país encontrado.", "Resultado da Pesquisa", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+
+                // Atualize a lista com os nomes dos países filtrados
+                listBoxCountries.DataSource = null; // Limpa o DataSource antes de atualizar
+                listBoxCountries.DataSource = filteredCountryNames;
+            }
+        } //btn para procurar país
 
         private void btnCleanCountry_Click(object sender, EventArgs e)
         {
@@ -351,5 +396,7 @@ namespace ProjetoPaises_WinForms
         }
 
         #endregion
+
+        
     }
 }

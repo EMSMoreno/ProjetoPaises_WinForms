@@ -526,6 +526,7 @@
             btnSearchCountry.TabIndex = 58;
             btnSearchCountry.Text = "Search Country";
             btnSearchCountry.UseVisualStyleBackColor = true;
+            btnSearchCountry.Click += btnSearchCountry_Click;
             // 
             // txtSearchCountry
             // 
