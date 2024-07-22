@@ -284,6 +284,7 @@
             btnJapanese.TabIndex = 23;
             btnJapanese.Text = "Japanese / 日本語";
             btnJapanese.UseVisualStyleBackColor = true;
+            btnJapanese.Click += btnJapanese_Click;
             // 
             // btnOrderAZ
             // 

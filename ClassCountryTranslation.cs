@@ -4,9 +4,8 @@ namespace ProjetoPaisesC
 {
     public class ClassCountryTranslation
     {
-        public string CommonName { get; set; }
-        public string OfficialName { get; set; }
-        public string Capital { get; set; }
+        public string Common { get; set; }
+        public string Official { get; set; }
     }
 
 }

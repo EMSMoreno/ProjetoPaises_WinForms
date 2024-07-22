@@ -29,10 +29,10 @@ namespace ProjetoPaisesC
             Population = 0;
             Gini = new ClassCountryGini();
             Flags = new ClassCountryFlags();
-            Translations = new Dictionary<string, ClassCountryTranslation>();
             Timezones = new List<string>();
             Continent = string.Empty;
             FlagDescription = string.Empty;
+            Translations = new Dictionary<string, ClassCountryTranslation>();
         }
 
         public class ClassCountryName : ProjetoPaises_WinForms.ClassCountryName

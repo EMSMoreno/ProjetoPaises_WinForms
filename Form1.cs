@@ -1,13 +1,7 @@
-﻿using System.Configuration;
-using System.Diagnostics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json.Linq;
 using ProjetoPaisesC;
-using Newtonsoft.Json.Linq;
+using System.Configuration;
+using System.Diagnostics;
 
 namespace ProjetoPaises_WinForms
 {
@@ -16,6 +10,8 @@ namespace ProjetoPaises_WinForms
         private List<ClassCountry> countries;
         private ProjetoPaisesC.ClassSQLtoC dbSQL;
         private const string GitHubUsername = "EMSMoreno";
+        private Dictionary<string, ClassCountry> countryLookup = new Dictionary<string, ClassCountry>();
+
 
         public Form1()
         {
@@ -42,15 +38,6 @@ namespace ProjetoPaises_WinForms
                         // Usar JObject para deserializar os dados para a classe ClassCountry
                         var country = item.ToObject<ClassCountry>();
 
-                        // Ajustar campos específicos
-                        if (country.Name == null)
-                        {
-                            country.Name = new ClassCountry.ClassCountryName();
-                        }
-
-                        // Adicionar a tradução manualmente (se necessário)
-                        // country.Translations.Add("jpn", new ClassCountryTranslation { Common = "日本", Official = "日本", NativeName = "東京" });
-
                         // Corrigir campos adicionais
                         country.Continent = country.Region; // Passar a região como continente, se aplicável
                         country.FlagDescription = country.Flags?.Alt; // Passar a descrição da bandeira
@@ -59,6 +46,24 @@ namespace ProjetoPaises_WinForms
                         if (country.Timezones == null)
                         {
                             country.Timezones = new List<string>();
+                        }
+
+                        // Verificar se Translations é nulo e inicializar se necessário
+                        if (country.Translations == null)
+                        {
+                            country.Translations = new Dictionary<string, ClassCountryTranslation>();
+                        }
+
+                        // Adiciona as traduções se existirem
+                        var translationsObject = item["translations"];
+                        if (translationsObject != null)
+                        {
+                            foreach (var translation in translationsObject.Children<JProperty>())
+                            {
+                                var languageCode = translation.Name; // Nome da propriedade é o código do idioma
+                                var translationObject = translation.Value.ToObject<ClassCountryTranslation>();
+                                country.Translations[languageCode] = translationObject;
+                            }
                         }
 
                         countriesList.Add(country);
@@ -189,6 +194,7 @@ namespace ProjetoPaises_WinForms
 
         #region Funções Extra
 
+        //Funcionalidade Dark Mode
         private void InitializeUI(string key)
         {
             try
@@ -214,7 +220,7 @@ namespace ProjetoPaises_WinForms
             {
                 throw;
             }
-        } //Funcionalidade Dark Mode
+        } 
 
         private void btnDarkMode_Click(object sender, EventArgs e)
         {
@@ -226,42 +232,7 @@ namespace ProjetoPaises_WinForms
             txtSearchCountry.Text = string.Empty;
         } // btn Limpar país procurado
 
-        private void SortCountriesByNameAZ() // Ordenar Países A -> Z
-        {
-            if (countries != null && countries.Count > 0)
-                {
-                    countries = countries.OrderBy(c => c.Name.Common).ToList();
-                    DisplayCountries(); // Atualiza a exibição após a ordenação
-                }
-        }
-
-        private void SortCountriesByNameZA() // Ordenar Países Z -> A
-        {
-            if (countries != null && countries.Count > 0)
-            {
-                countries = countries.OrderByDescending(c => c.Name.Common).ToList();
-                DisplayCountries();// Atualiza a exibição após a ordenação
-            }
-        }
-
-        private void AddTranslation(ClassCountry country, string languageCode, string commonName, string officialName, string capital)
-        {
-            if (!country.Translations.ContainsKey(languageCode))
-            {
-                country.Translations[languageCode] = new ClassCountryTranslation
-                {
-                    CommonName = commonName,
-                    OfficialName = officialName,
-                    Capital = capital
-                };
-            }
-        }
-
-        private void btnGithub_Click(object sender, EventArgs e)
-        {
-            ShowGithub(GitHubUsername);
-        } // btn abrir Github
-
+        //Github
         private void ShowGithub(string username)
         {
             try
@@ -275,6 +246,67 @@ namespace ProjetoPaises_WinForms
             catch (Exception ex)
             {
                 MessageBox.Show($"Erro ao abrir o perfil do GitHub: {ex.GetType().ToString()}\n{ex.Message}");
+            }
+        }
+
+        private void btnGithub_Click(object sender, EventArgs e)
+        {
+            ShowGithub(GitHubUsername);
+        } // btn abrir Github
+
+        //Função para traduzir Japonês
+        private void ShowTranslationPopup(ClassCountry country, string languageCode)
+        {
+            if (country.Translations != null && country.Translations.ContainsKey(languageCode))
+            {
+                var translation = country.Translations[languageCode];
+                string translatedName = translation.Common;
+                string message = $"Translated Name to Japanese: {translatedName}";
+                MessageBox.Show(message, "Country Name Translation", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show("Translation not available for this Country!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void btnJapanese_Click(object sender, EventArgs e)
+        {
+            if (listBoxCountries.SelectedItem != null)
+            {
+                var selectedCountryName = listBoxCountries.SelectedItem.ToString();
+                var selectedCountry = countries.FirstOrDefault(c => c.Name.Common == selectedCountryName);
+
+                if (selectedCountry != null)
+                {
+                    ShowTranslationPopup(selectedCountry, "jpn");
+                }
+                else
+                {
+                    MessageBox.Show("Selected a valid Country!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Select a Country first!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        } //btn Japonês
+
+        private void SortCountriesByNameAZ() // Ordenar Países A -> Z
+        {
+            if (countries != null && countries.Count > 0)
+            {
+                countries = countries.OrderBy(c => c.Name.Common).ToList();
+                DisplayCountries(); // Atualiza a exibição após a ordenação
+            }
+        }
+
+        private void SortCountriesByNameZA() // Ordenar Países Z -> A
+        {
+            if (countries != null && countries.Count > 0)
+            {
+                countries = countries.OrderByDescending(c => c.Name.Common).ToList();
+                DisplayCountries();// Atualiza a exibição após a ordenação
             }
         }
 
@@ -319,6 +351,5 @@ namespace ProjetoPaises_WinForms
         }
 
         #endregion
-
     }
 }
