@@ -1,15 +1,20 @@
-﻿using Newtonsoft.Json;
-using ProjetoPaisesC;
-using ProjetoPaisesC_;
-using System.Configuration;
+﻿using System.Configuration;
 using System.Diagnostics;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
+using ProjetoPaisesC;
+using Newtonsoft.Json.Linq;
 
 namespace ProjetoPaises_WinForms
 {
     public partial class Form1 : Form
     {
         private List<ClassCountry> countries;
-        private ProjetoPaisesC_.ClassSQLtoC dbSQL;
+        private ProjetoPaisesC.ClassSQLtoC dbSQL;
         private const string GitHubUsername = "EMSMoreno";
 
         public Form1()
@@ -30,17 +35,33 @@ namespace ProjetoPaises_WinForms
                 using (var client = new HttpClient())
                 {
                     var response = await client.GetStringAsync("https://restcountries.com/v3.1/all");
-                    countriesList = JsonConvert.DeserializeObject<List<ClassCountry>>(response);
+                    var apiResponse = JArray.Parse(response);
 
-                    foreach (var country in countriesList)
+                    foreach (var item in apiResponse)
                     {
-                        // Adicionar a tradução manualmente
-                        AddTranslation(country, "jpn", "日本", "日本", "東京");
+                        // Usar JObject para deserializar os dados para a classe ClassCountry
+                        var country = item.ToObject<ClassCountry>();
 
-                        // Preenche as propriedades adicionais
-                        country.Timezones.AddRange(country.Timezones); // Passar as timezones
-                        country.Continent = country.Region; // Passar a região
+                        // Ajustar campos específicos
+                        if (country.Name == null)
+                        {
+                            country.Name = new ClassCountry.ClassCountryName();
+                        }
+
+                        // Adicionar a tradução manualmente (se necessário)
+                        // country.Translations.Add("jpn", new ClassCountryTranslation { Common = "日本", Official = "日本", NativeName = "東京" });
+
+                        // Corrigir campos adicionais
+                        country.Continent = country.Region; // Passar a região como continente, se aplicável
                         country.FlagDescription = country.Flags?.Alt; // Passar a descrição da bandeira
+
+                        // Verificar se Timezones é nulo e inicializar se necessário
+                        if (country.Timezones == null)
+                        {
+                            country.Timezones = new List<string>();
+                        }
+
+                        countriesList.Add(country);
                     }
                 }
             }
@@ -52,10 +73,14 @@ namespace ProjetoPaises_WinForms
             return countriesList;
         }
 
+
         private void UpdateCountryDetails(ClassCountry selectedCountry)
         {
-            txtName.Text = selectedCountry.CommonName;
-            txtOfficialName.Text = selectedCountry.OfficialName;
+            if (selectedCountry == null) return;
+
+            // Atualiza os campos de texto com os detalhes do país
+            txtName.Text = selectedCountry.Name.Common;
+            txtOfficialName.Text = selectedCountry.Name.Official;
 
             if (selectedCountry.Currencies != null && selectedCountry.Currencies.Count > 0)
             {
@@ -69,25 +94,34 @@ namespace ProjetoPaises_WinForms
                 txtSymbol.Text = "N/A";
             }
 
-            txtCapital.Text = selectedCountry.Capital != null && selectedCountry.Capital.Count > 0 ? selectedCountry.Capital[0] : "";
-            txtRegion.Text = selectedCountry.Region;
-            txtSubregion.Text = selectedCountry.Subregion;
+            txtCapital.Text = selectedCountry.Capital != null && selectedCountry.Capital.Count > 0 ? selectedCountry.Capital[0] : "N/A";
+            txtRegion.Text = selectedCountry.Region ?? "N/A";
+            txtSubregion.Text = selectedCountry.Subregion ?? "N/A";
             txtPopulation.Text = selectedCountry.Population.ToString();
             txtGiniIndex.Text = selectedCountry.Gini != null && selectedCountry.Gini.GiniValue.HasValue ? selectedCountry.Gini.GiniValue.Value.ToString() : "N/A";
-            txtTimezones.Text = string.Join(", ", selectedCountry.Timezones);
-            txtCountryContinent.Text = selectedCountry.Continent;
-            txtFlagDescription.Text = selectedCountry.FlagDescription;
+            txtTimezones.Text = selectedCountry.Timezones != null ? string.Join(", ", selectedCountry.Timezones) : "N/A";
+            txtCountryContinent.Text = selectedCountry.Continent ?? "N/A";
+            txtFlagDescription.Text = selectedCountry.FlagDescription ?? "N/A";
 
+            // Atualiza a imagem da bandeira se estiver disponível
             if (!string.IsNullOrEmpty(selectedCountry.Flags?.Png))
             {
-                pictureBoxFlag.Load(selectedCountry.Flags.Png);
+                try
+                {
+                    pictureBoxFlag.Load(selectedCountry.Flags.Png);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Erro ao carregar a imagem da bandeira: {ex.Message}");
+                    pictureBoxFlag.Image = null; // Limpa a imagem se houver erro
+                }
             }
             else
             {
-                // Limpar a imagem se não houver bandeira
-                pictureBoxFlag.Image = null;
+                pictureBoxFlag.Image = null; // Limpa a imagem se não houver URL
             }
         }
+
 
         private async void LoadCountries()
         {
@@ -108,7 +142,7 @@ namespace ProjetoPaises_WinForms
                 }
 
                 progressBar.Value = 100;
-                DisplayCountries(); // Atualiza a exibição dos países no listBoxCountries
+                DisplayCountries(); // Atualiza a exibição dos países no ListBox
             }
             catch (Exception ex)
             {
@@ -118,9 +152,17 @@ namespace ProjetoPaises_WinForms
 
         private void DisplayCountries()
         {
-            listBoxCountries.DataSource = countries;
-            listBoxCountries.DisplayMember = "Name.Official"; //Será este o nome certo para mostrar o nome dos países na listBox
+            if (countries != null && countries.Count > 0)
+            {
+                listBoxCountries.DataSource = countries;
+                listBoxCountries.DisplayMember = "CommonName"; // Ou use "OfficialName" se preferir
+            }
+            else
+            {
+                listBoxCountries.DataSource = null; // Limpar o DataSource se a lista estiver vazia
+            }
         }
+
 
         private void listBoxCountries_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -170,21 +212,21 @@ namespace ProjetoPaises_WinForms
             txtSearchCountry.Text = string.Empty;
         } // btn Limpar país procurado
 
-        private void SortCountriesByNameAZ() //Ordenar Paises A -> Z 
+        private void SortCountriesByNameAZ() // Ordenar Países A -> Z
         {
             if (countries != null)
             {
-                countries.Sort((c1, c2) => c1.CommonName.CompareTo(c2.CommonName));
+                countries.Sort((c1, c2) => string.Compare(c1.Name.Common, c2.Name.Common, StringComparison.OrdinalIgnoreCase));
                 DisplayCountries(); // Atualiza a exibição após a ordenação
             }
         }
 
-        private void SortCountriesByNameZA() //Ordenar Paises Z -> A 
+        private void SortCountriesByNameZA() // Ordenar Países Z -> A
         {
             if (countries != null)
             {
-                countries.Sort((c1, c2) => c2.CommonName.CompareTo(c1.CommonName)); // Ordena de Z a A
-                DisplayCountries();
+                countries.Sort((c1, c2) => string.Compare(c2.Name.Common, c1.Name.Common, StringComparison.OrdinalIgnoreCase));
+                DisplayCountries(); // Atualiza a exibição após a ordenação
             }
         }
 
@@ -199,7 +241,7 @@ namespace ProjetoPaises_WinForms
                     Capital = capital
                 };
             }
-        } //Não ligues a isto, é só uma feature q quero fazer, traduzir o nome dos país selecionado com um popup
+        }
 
         private void btnGithub_Click(object sender, EventArgs e)
         {
