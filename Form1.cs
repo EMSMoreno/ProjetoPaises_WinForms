@@ -73,7 +73,6 @@ namespace ProjetoPaises_WinForms
             return countriesList;
         }
 
-
         private void UpdateCountryDetails(ClassCountry selectedCountry)
         {
             if (selectedCountry == null) return;
@@ -122,7 +121,6 @@ namespace ProjetoPaises_WinForms
             }
         }
 
-
         private async void LoadCountries()
         {
             progressBar.Value = 0;
@@ -133,6 +131,7 @@ namespace ProjetoPaises_WinForms
                 {
                     progressBar.Value = 20;
                     countries = await FetchCountriesFromAPI();
+                    MessageBox.Show($"Número de países carregados: {countries.Count}");
                     dbSQL.SaveCountries(countries);
                 }
                 else
@@ -150,27 +149,42 @@ namespace ProjetoPaises_WinForms
             }
         }
 
-        private void DisplayCountries()
-        {
-            if (countries != null && countries.Count > 0)
-            {
-                listBoxCountries.DataSource = countries;
-                listBoxCountries.DisplayMember = "CommonName"; // Ou use "OfficialName" se preferir
-            }
-            else
-            {
-                listBoxCountries.DataSource = null; // Limpar o DataSource se a lista estiver vazia
-            }
-        }
-
-
         private void listBoxCountries_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (listBoxCountries.SelectedItem != null)
             {
-                ClassCountry selectedCountry = (ClassCountry)listBoxCountries.SelectedItem;
-                UpdateCountryDetails(selectedCountry);
+                // Encontra o país correspondente pelo nome comum
+                var selectedCountryName = listBoxCountries.SelectedItem.ToString();
+                var selectedCountry = countries.FirstOrDefault(c => c.Name.Common == selectedCountryName);
+
+                if (selectedCountry != null)
+                {
+                    UpdateCountryDetails(selectedCountry);
+                }
             }
+        }
+
+        private void DisplayCountries()
+        {
+            if (countries == null || countries.Count == 0)
+            {
+                listBoxCountries.DataSource = null;
+                listBoxCountries.Items.Clear(); // Limpa os itens da lista
+                return;
+            }
+
+            // Cria uma lista de nomes de países
+            var countryNames = countries.Select(c => c.Name.Common).ToList();
+
+            // Adiciona logs para depuração
+            Debug.WriteLine($"Number of countries: {countries.Count}");
+            foreach (var country in countries)
+            {
+                Debug.WriteLine($"Country: {country.Name.Common}, Official: {country.Name.Official}");
+            }
+
+            // Associa a lista de nomes ao DataSource do ListBox
+            listBoxCountries.DataSource = countryNames;
         }
 
         #region Funções Extra
@@ -214,19 +228,19 @@ namespace ProjetoPaises_WinForms
 
         private void SortCountriesByNameAZ() // Ordenar Países A -> Z
         {
-            if (countries != null)
-            {
-                countries.Sort((c1, c2) => string.Compare(c1.Name.Common, c2.Name.Common, StringComparison.OrdinalIgnoreCase));
-                DisplayCountries(); // Atualiza a exibição após a ordenação
-            }
+            if (countries != null && countries.Count > 0)
+                {
+                    countries = countries.OrderBy(c => c.Name.Common).ToList();
+                    DisplayCountries(); // Atualiza a exibição após a ordenação
+                }
         }
 
         private void SortCountriesByNameZA() // Ordenar Países Z -> A
         {
-            if (countries != null)
+            if (countries != null && countries.Count > 0)
             {
-                countries.Sort((c1, c2) => string.Compare(c2.Name.Common, c1.Name.Common, StringComparison.OrdinalIgnoreCase));
-                DisplayCountries(); // Atualiza a exibição após a ordenação
+                countries = countries.OrderByDescending(c => c.Name.Common).ToList();
+                DisplayCountries();// Atualiza a exibição após a ordenação
             }
         }
 
@@ -306,7 +320,5 @@ namespace ProjetoPaises_WinForms
 
         #endregion
 
-
-        
     }
 }
